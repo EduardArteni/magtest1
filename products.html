@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="">
+
+<head>
+  <title></title>
+  <style>
+    #produsDiv {
+      background-color: lightgrey;
+    }
+    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+  <div id="produse">
+    <h1>PRODUSE</h1>
+  </div>
+
+  <script>
+    function getProducts() {
+      console.log("luam produsele");
+
+    fetch(`http://localhost:8080/product?name=a`, {
+            method: 'GET',
+        }).then(res => res.json()).then(data => {
+           localStorage.setItem("produse", JSON.stringify(data));
+        });
+    }
+    getProducts();
+  
+    const produseString = localStorage.getItem("produse");
+    var produseObj = JSON.parse(produseString)
+    var produseArray = [];
+
+    const prodEl = document.querySelector("#produse")
+    produseObj.forEach(produs => {
+      productCard(produs)
+    })
+
+    function productCard(produs) {
+
+      
+      const div = document.createElement("div")
+      div.setAttribute("id","produsDiv")
+      const span = document.createElement("span")
+      const a = document.createElement("a")
+      const h1 = document.createElement("h1")
+      a.setAttribute("href","product.html")
+
+      //a.innerText = `${produs.name}`
+      h1.innerHTML = `${produs.name}`
+      span.innerHTML = `${produs.price}`
+
+      div.append(a)
+      a.append(h1)
+      div.append(span)
+      prodEl.append(div)
+      
+    }
+
+
+  </script>
+
+</body>
+
+</html>
