@@ -22,7 +22,7 @@
     function getProducts() {
       console.log("luam produsele");
 
-    fetch(`http://localhost:8080/product?name=a`, {
+    fetch(`http://localhost:8080/product?name=`, {
             method: 'GET',
         }).then(res => res.json()).then(data => {
            localStorage.setItem("produse", JSON.stringify(data));
@@ -47,7 +47,7 @@
       const span = document.createElement("span")
       const a = document.createElement("a")
       const h1 = document.createElement("h1")
-      a.setAttribute("href","product.html")
+      a.setAttribute("href",`product.html?productID=${produs.id}`)
 
       //a.innerText = `${produs.name}`
       h1.innerHTML = `${produs.name}`
