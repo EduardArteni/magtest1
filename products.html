@@ -18,26 +18,42 @@
     <h1>PRODUSE</h1>
   </div>
 
-  <script>
-    function getProducts() {
-      console.log("luam produsele");
+  <div id = "search">
+    <input type="search" id = "searchbar">
+    <input type="button" id = "searchbutton" value = "SEARCH">
+  </div>
 
-    fetch(`http://localhost:8080/product?name=`, {
-            method: 'GET',
-        }).then(res => res.json()).then(data => {
-           localStorage.setItem("produse", JSON.stringify(data));
-        });
-    }
-    getProducts();
+  <script>
+        const prodEl = document.querySelector("#search")
+    const searchbutton = document.getElementById('searchbutton');
+    const searchbar = document.getElementById('searchbar');
+
+
+    searchbutton.addEventListener('click', test);
+
+
+    
+
   
+    function test(){
+      getProducts(searchbar.value);
+      removeProducts();
+      displayProduse();
+    }
+
+    function displayProduse(){
+
     const produseString = localStorage.getItem("produse");
     var produseObj = JSON.parse(produseString)
     var produseArray = [];
 
-    const prodEl = document.querySelector("#produse")
+
     produseObj.forEach(produs => {
       productCard(produs)
     })
+
+    localStorage.setItem("produse",null);
+  }
 
     function productCard(produs) {
 
@@ -60,6 +76,23 @@
       
     }
 
+    function removeProducts(){
+      let produsDiv = document.getElementById("produsDiv");
+      while (produsDiv != null){
+      produsDiv.remove();
+      produsDiv = document.getElementById("produsDiv");
+      }
+    }
+
+    function getProducts(name) {
+      console.log("luam produsele " + name);
+
+    fetch(`http://localhost:8080/product?name=${name}`, {
+            method: 'GET',
+        }).then(res => res.json()).then(data => {
+           localStorage.setItem("produse", JSON.stringify(data));
+        });
+    }
 
   </script>
 

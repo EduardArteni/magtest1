@@ -1,4 +1,7 @@
-const ceva = document.getElementById('produse');
+const nume_produs = document.getElementById('nume_produs');
+const pret_produs = document.getElementById('pret_produs');
+const descriere_produs = document.getElementById('descriere_produs');
+
 let params = new URLSearchParams(location.search);
 
 var product_id = params.get('productID');
@@ -14,6 +17,8 @@ fetch(`http://localhost:8080/productDetails?id=${product_id}`, {
         }).then(res => res.json()).then(data => {
             localStorage.setItem("product", JSON.stringify(data));
         });
+
+
         var produseObj = JSON.parse(localStorage.getItem("product"));
         product_name = produseObj.name;
         product_description = produseObj.description;
@@ -21,3 +26,8 @@ fetch(`http://localhost:8080/productDetails?id=${product_id}`, {
         product_category = produseObj.category;
         product_price = produseObj.price;
         product_created_at = produseObj.created_at;
+
+
+        nume_produs.innerHTML = product_name;
+        pret_produs.innerHTML = product_price;
+        descriere_produs.innerHTML = product_description;
