@@ -16,6 +16,7 @@ function logIn() {
             if (data.responseCode == 0) {
                 
                 localStorage.setItem("loggedInUserUsername", data.user.username);
+                localStorage.setItem("loggedInUserID", data.user.id);
                 
                 location.href='http://127.0.0.1:5500/my-account.html';
             } else {
