@@ -10,7 +10,7 @@ function logIn() {
         error_display_log_in.innerHTML = "please enter username and password";
     } else {
         error_display_log_in.innerHTML = "";
-        fetch(`http://localhost:8080/login?username=${username_log_in.value}&password=${password_log_in.value}`, {
+        fetch(`http://127.0.0.1:8080/login?username=${username_log_in.value}&password=${password_log_in.value}`, {
             method: 'GET',
         }).then(res => res.json()).then(data => {
             if (data.responseCode == 0) {

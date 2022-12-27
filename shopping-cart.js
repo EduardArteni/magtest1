@@ -2,6 +2,7 @@ const prodEl = document.querySelector("#produse")
 const total_price = document.querySelector("#total_price")
 const complete_order_button = document.querySelector("#complete_order_button")
 var total_price_var = 0;
+const clear_cart_button = document.querySelector("#clear_cart_button")
 
 
 
@@ -9,31 +10,68 @@ var total_price_var = 0;
 getProducts(localStorage.getItem("loggedInUserUsername"));
 displayProduse();
 
+
+
+clear_cart_button.addEventListener('click',clearCart)
+complete_order_button.addEventListener('click',completeOrder)
+
+
+function clearCart(){
+  fetch(`http://127.0.0.1:8080/cart/clear?user_id=${localStorage.getItem("loggedInUserID")}`, {method: 'DELETE'})
+  console.log("cleared cart")
+}
+
+function completeOrder(){
+
+  let orderItem = {order_id:0,
+    product_id:0,
+    quantity:0,
+    total:0
+  };
+
+  const produseString = localStorage.getItem("produse_cart");
+  var produseObj = JSON.parse(produseString)
+
+
+  console.log("am intrat")
+
+  // produseObj.forEach(produs => {
+  //   orderItem.
+  // })
+
+
+  const body = {
+    "user_id": localStorage.getItem("loggedInUserID"),
+    "total": total_price_var,
+    "items": produseObj
+  };
+
+  const stringBody = JSON.stringify(body);
+
+  console.log(stringBody);
+
+  fetch('http://127.0.0.1:8080/api/v1/order', 
+  {method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: stringBody
+  })
+
+  //clearCart();
+}
+
 function displayProduse(){
 
 const produseString = localStorage.getItem("produse_cart");
 var produseObj = JSON.parse(produseString)
-var produseArray = [];
-
-function completeOrder(){
-  console.log(`INSERT INTO public.order_details(user_id, total) VALUES (${localStorage.getItem("loggedInUserID")}, ${total_price_var});`);
-  let order_id = 1;
-  produseObj.forEach(produs => {
-    console.log(`INSERT INTO public.order_items(...) VALUES (${order_id}, ${produs.product_id}, ${produs.quantity});`);
-  })
-}
-
-complete_order_button.addEventListener('click',completeOrder)
-
 
 produseObj.forEach(produs => {
   productCard(produs)
   total_price_var += produs.total;
   total_price.innerHTML = "TOTAL: " + total_price_var; 
 })
-
 localStorage.setItem("produse_cart",null);
-
 }
 
 function productCard(produs) {
