@@ -1,0 +1,36 @@
+<head>
+    <title>ORDERS</title>
+</head>
+
+<body>
+
+    <h1  id = "title">YOUR ORDERS</h1>
+
+    <div id = "orders"></div>
+
+    <script>
+        const orders = document.getElementById("orders");
+        //http://127.0.0.1:8080/api/v1/orders/1
+        fetch(`http://127.0.0.1:8080/api/v1/orders/${localStorage.getItem("loggedInUserID")}`, {
+            method: 'GET',
+        }).then(res => res.json()).then(data => {
+            data.forEach(element => {
+                console.log(element);
+                orderCard(element);
+            });
+        });
+
+        function orderCard(element){
+            const div = document.createElement("div");
+            div.id = element.id;
+
+            const text = document.createElement("h2");
+            text.innerHTML = `<a href = "http://127.0.0.1:5500/confirm-order.html?id=${element.id}">ORDER ${element.id}, TOTAL ${element.total}, STATUS ${element.status}, CREATED AT ${element.createdAt}<a>`;
+            div.append(text);
+            
+
+            orders.append(div)
+        }
+    </script>
+
+</body>

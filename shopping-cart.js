@@ -22,23 +22,9 @@ function clearCart(){
 }
 
 function completeOrder(){
-
-  let orderItem = {order_id:0,
-    product_id:0,
-    quantity:0,
-    total:0
-  };
-
+  if(total_price_var > 0){
   const produseString = localStorage.getItem("produse_cart");
   var produseObj = JSON.parse(produseString)
-
-
-  console.log("am intrat")
-
-  // produseObj.forEach(produs => {
-  //   orderItem.
-  // })
-
 
   const body = {
     "user_id": localStorage.getItem("loggedInUserID"),
@@ -47,18 +33,14 @@ function completeOrder(){
   };
 
   const stringBody = JSON.stringify(body);
-
   console.log(stringBody);
-
-  fetch('http://127.0.0.1:8080/api/v1/order', 
-  {method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: stringBody
-  })
-
-  //clearCart();
+  fetch('http://127.0.0.1:8080/api/v1/order', {method: 'POST',headers: {'Content-Type': 'application/json',},body: stringBody})
+  .then(res => res.json()).then(data => {
+    console.log("Done")
+    //clearCart();
+    location.href=`http://127.0.0.1:5500/confirm-order.html?id=${data.id}`;
+ });
+}
 }
 
 function displayProduse(){
@@ -106,8 +88,6 @@ function removeProducts(){
 }
 
 function getProducts(id) {
-  console.log("luam produsele " + id);
-
 fetch(`http://127.0.0.1:8080/cart?username=${id}`, {
         method: 'GET',
     }).then(res => res.json()).then(data => {

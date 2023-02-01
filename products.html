@@ -27,36 +27,26 @@
   <a href = "shopping-cart.html"><button>SHOPPING CART</button></a>
 
   <script>
-        const prodEl = document.querySelector("#search")
+    const prodEl = document.querySelector("#search")
     const searchbutton = document.getElementById('searchbutton');
     const searchbar = document.getElementById('searchbar');
+    let params = new URLSearchParams(location.search);
+    var searchText = params.get('search');    
 
+    searchbutton.addEventListener("click",search);
 
-    searchbutton.addEventListener('click', test);
-
-
-    
-
-  
-    function test(){
-      getProducts(searchbar.value);
-      removeProducts();
-      displayProduse();
+    function search(){
+      location.href = `?search=${searchbar.value}`;
     }
 
-    function displayProduse(){
+    fetch(`http://localhost:8080/product?name=${searchText}`, {
+            method: 'GET',
+        }).then(res => res.json()).then(data => {
+           data.forEach(produs =>{
+            productCard(produs)
+           })
+        });
 
-    const produseString = localStorage.getItem("produse");
-    var produseObj = JSON.parse(produseString)
-    var produseArray = [];
-
-
-    produseObj.forEach(produs => {
-      productCard(produs)
-    })
-
-    localStorage.setItem("produse",null);
-  }
 
     function productCard(produs) {
 
@@ -68,7 +58,6 @@
       const h1 = document.createElement("h1")
       a.setAttribute("href",`product.html?productID=${produs.id}`)
 
-      //a.innerText = `${produs.name}`
       h1.innerHTML = `${produs.name}`
       span.innerHTML = `${produs.price}`
 
@@ -79,23 +68,8 @@
       
     }
 
-    function removeProducts(){
-      let produsDiv = document.getElementById("produsDiv");
-      while (produsDiv != null){
-      produsDiv.remove();
-      produsDiv = document.getElementById("produsDiv");
-      }
-    }
 
-    function getProducts(name) {
-      console.log("luam produsele " + name);
 
-    fetch(`http://localhost:8080/product?name=${name}`, {
-            method: 'GET',
-        }).then(res => res.json()).then(data => {
-           localStorage.setItem("produse", JSON.stringify(data));
-        });
-    }
 
   </script>
 

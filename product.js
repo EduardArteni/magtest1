@@ -18,23 +18,18 @@ add_to_cart_button.addEventListener('click', add_to_cart);
 fetch(`http://localhost:8080/productDetails?id=${product_id}`, {
             method: 'GET',
         }).then(res => res.json()).then(data => {
-            localStorage.setItem("product", JSON.stringify(data))
+            product_name = data.name;
+            product_description = data.description;
+            product_SKU = data.SKU;
+            product_category = data.category;
+            product_price = data.price;
+            product_created_at = data.created_at;
+
+
+            nume_produs.innerHTML = product_name;
+            pret_produs.innerHTML = product_price;
+            descriere_produs.innerHTML = product_description;
         });
-
-
-        var produseObj = JSON.parse(localStorage.getItem("product"));
-        product_name = produseObj.name;
-        product_description = produseObj.description;
-        product_SKU = produseObj.SKU;
-        product_category = produseObj.category;
-        product_price = produseObj.price;
-        product_created_at = produseObj.created_at;
-
-
-        nume_produs.innerHTML = product_name;
-        pret_produs.innerHTML = product_price;
-        descriere_produs.innerHTML = product_description;
-
 function add_to_cart(){
     fetch(`http://127.0.0.1:8080/cart?username=${localStorage.getItem("loggedInUserUsername")}&product_id=${product_id}&quantity=1`, {
             method: 'POST',
