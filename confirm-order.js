@@ -106,7 +106,7 @@ function displayProduse(){
     var cell3 = row.insertCell(2);
     var cell4 = row.insertCell(3);
 
-    cell1.innerHTML = produs.productId;
+    cell1.innerHTML = produs.product_id;
     cell2.innerHTML = produs.total/produs.quantity;
     cell3.innerHTML = produs.quantity;
     cell4.innerHTML = produs.total;

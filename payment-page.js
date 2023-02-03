@@ -20,6 +20,7 @@ function pay(){
     console.log(data);
     if(data == true){
       console.log("GOOD");
+      location.href = "http://127.0.0.1:5500/thankyou.html";
     }else{
       console.log("BAD");
     }

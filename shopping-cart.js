@@ -37,7 +37,7 @@ function completeOrder(){
   fetch('http://127.0.0.1:8080/api/v1/order', {method: 'POST',headers: {'Content-Type': 'application/json',},body: stringBody})
   .then(res => res.json()).then(data => {
     console.log("Done")
-    //clearCart();
+    clearCart();
     location.href=`http://127.0.0.1:5500/confirm-order.html?id=${data.id}`;
  });
 }
