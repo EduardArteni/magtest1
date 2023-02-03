@@ -4,21 +4,24 @@ const complete_order_button = document.querySelector("#complete_order_button")
 var total_price_var = 0;
 const clear_cart_button = document.querySelector("#clear_cart_button")
 
-
-
-
-getProducts(localStorage.getItem("loggedInUserUsername"));
-displayProduse();
-
-
-
 clear_cart_button.addEventListener('click',clearCart)
 complete_order_button.addEventListener('click',completeOrder)
 
 
+fetch(`http://127.0.0.1:8080/cart?username=${localStorage.getItem("loggedInUserUsername")}`, {
+        method: 'GET',
+    }).then(res => res.json()).then(data => {
+      data.forEach(produs => {
+        productCard(produs)
+        total_price_var += produs.total;
+        total_price.innerHTML = "TOTAL: " + total_price_var; 
+      })
+    });
+
 function clearCart(){
   fetch(`http://127.0.0.1:8080/cart/clear?user_id=${localStorage.getItem("loggedInUserID")}`, {method: 'DELETE'})
   console.log("cleared cart")
+  location.reload()
 }
 
 function completeOrder(){
@@ -43,19 +46,6 @@ function completeOrder(){
 }
 }
 
-function displayProduse(){
-
-const produseString = localStorage.getItem("produse_cart");
-var produseObj = JSON.parse(produseString)
-
-produseObj.forEach(produs => {
-  productCard(produs)
-  total_price_var += produs.total;
-  total_price.innerHTML = "TOTAL: " + total_price_var; 
-})
-localStorage.setItem("produse_cart",null);
-}
-
 function productCard(produs) {
 
   
@@ -77,20 +67,4 @@ function productCard(produs) {
   div.append(removeButton)
   prodEl.append(div)
   
-}
-
-function removeProducts(){
-  let produsDiv = document.getElementById("produsDiv");
-  while (produsDiv != null){
-  produsDiv.remove();
-  produsDiv = document.getElementById("produsDiv");
-  }
-}
-
-function getProducts(id) {
-fetch(`http://127.0.0.1:8080/cart?username=${id}`, {
-        method: 'GET',
-    }).then(res => res.json()).then(data => {
-       localStorage.setItem("produse_cart", JSON.stringify(data));
-    });
 }

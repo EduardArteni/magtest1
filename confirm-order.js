@@ -64,7 +64,6 @@ function displayProduse(){
     fetch(`http://127.0.0.1:8080/api/v1/order/${id}`, {
             method: 'GET',
         }).then(res => res.json()).then(data => {
-            
             var row = table.insertRow(0);
             var totalCell = row.insertCell(0);
             row.insertCell(1);
@@ -106,7 +105,7 @@ function displayProduse(){
     var cell3 = row.insertCell(2);
     var cell4 = row.insertCell(3);
 
-    cell1.innerHTML = produs.product_id;
+    cell1.innerHTML = produs.productName;
     cell2.innerHTML = produs.total/produs.quantity;
     cell3.innerHTML = produs.quantity;
     cell4.innerHTML = produs.total;
